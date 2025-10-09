@@ -1,0 +1,14 @@
+{
+  "name": "lev-trade",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "http-server"
+  ],
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
