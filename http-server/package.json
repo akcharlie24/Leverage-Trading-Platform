@@ -8,10 +8,14 @@
     "start": "bun run index.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/ioredis": "^5.0.0"
   },
   "dependencies": {
-    "@lev-trade/config": "workspace:*"
+    "@lev-trade/config": "workspace:*",
+    "ioredis": "^5.8.1",
+    "rate-limiter-flexible": "^8.0.1",
+    "redis": "^5.8.3"
   },
   "peerDependencies": {
     "typescript": "^5"
