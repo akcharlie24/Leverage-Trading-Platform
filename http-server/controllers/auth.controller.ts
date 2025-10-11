@@ -1,7 +1,15 @@
+import { SignUpSchema } from "@lev-trade/types";
 import JsonResponse from "../utils/JsonResponse";
 
-export async function signUpController(_req: Request, _body?: unknown): Promise<Response> {
+export async function signUpController(req: Request): Promise<Response> {
   try {
+    const body = await req.json();
+    const parsedData = SignUpSchema.safeParse(body);
+    if (!parsedData.success) {
+      return JsonResponse({ message: "Bad Request, Invalid Body" }, 400);
+    }
+    const { email, username, password } = parsedData.data;
+
     return JsonResponse({ message: "Hello there from signup" });
   } catch (error) {
     return JsonResponse(
@@ -11,7 +19,7 @@ export async function signUpController(_req: Request, _body?: unknown): Promise<
   }
 }
 
-export async function signInController(_req: Request, _body?: unknown): Promise<Response> {
+export async function signInController(req: Request): Promise<Response> {
   try {
     return JsonResponse({ message: "Hello there from signin" });
   } catch (error) {

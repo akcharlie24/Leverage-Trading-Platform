@@ -12,9 +12,7 @@ export async function router(req: Request): Promise<Response> {
     if (req.method === "POST") {
       try {
         const validation = req.clone();
-        const bodyy = req.body;
-        const body = await validation.json();
-        console.log();
+        await validation.json();
 
         switch (pathname) {
           case "/auth/signup":

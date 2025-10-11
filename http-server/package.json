@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@lev-trade/config": "workspace:*",
+    "@lev-trade/types": "workspace:*",
     "ioredis": "^5.8.1",
     "rate-limiter-flexible": "^8.0.1",
     "redis": "^5.8.3"

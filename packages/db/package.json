@@ -1,12 +1,21 @@
 {
-  "name": "db",
+  "name": "@lev-trade/db",
   "module": "index.ts",
   "type": "module",
   "private": true,
   "devDependencies": {
     "@types/bun": "latest"
   },
+  "scripts": {
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev --skip-generate",
+    "db:deploy": "prisma migrate deploy"
+  },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.17.1",
+    "prisma": "^6.17.1"
   }
 }

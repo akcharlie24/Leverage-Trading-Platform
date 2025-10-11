@@ -12,7 +12,6 @@ const server = {
       // -> We can remove this later if you wish to - but it is good for App Layer protection
 
       const getClientIp = () => {
-        // Trust proxy headers only if your deployment guarantees they are set by a trusted proxy
         const xff = req.headers.get("x-forwarded-for");
         if (xff) {
           const firstHop = xff.split(",")[0]?.trim();
@@ -29,11 +28,10 @@ const server = {
 
       const rlRes = await rateLimiter.consume(ip);
 
-      const nowSeconds = Math.floor(Date.now() / 1000);
       const rateLimiterHeaders = {
         "X-RateLimit-Limit": RATE_LIMIT_POINTS.toString(),
         "X-RateLimit-Remaining": rlRes.remainingPoints.toString(),
-        "X-RateLimit-Reset": (nowSeconds + Math.ceil(rlRes.msBeforeNext / 1000)).toString(),
+        "X-RateLimit-Reset": Math.ceil(rlRes.msBeforeNext / 1000).toString(),
       };
 
       const headers = {
@@ -47,7 +45,6 @@ const server = {
         });
       }
 
-      // Robust cookie parsing
       const cookieHeader = req.headers.get("cookie");
       const cookies: Record<string, string> = {};
       if (cookieHeader) {
@@ -68,15 +65,21 @@ const server = {
       (req as any).cookies = cookies;
 
       const pathname = new URL(req.url).pathname;
-      if (req.method === "GET" && (pathname === "/" || pathname === "/health")) {
-        return new Response(JSON.stringify({ message: "Healthy" }), { headers, status: 200 });
+      if (
+        req.method === "GET" &&
+        (pathname === "/" || pathname === "/health")
+      ) {
+        return new Response(JSON.stringify({ message: "Healthy" }), {
+          headers,
+          status: 200,
+        });
       }
 
       if (pathname.startsWith("/v1")) {
         return await router(req);
       }
 
-      return JsonResponse({ message: "Bad Request, Invalid Route" }, 400);
+      return JsonResponse({ message: "Bad Request, Invalid Route" }, 404);
     } catch (rejRes: any) {
       if (rejRes instanceof Error) {
         return JsonResponse({ message: "Internal Server Error" }, 500);
@@ -92,5 +95,5 @@ const server = {
   },
 };
 
-console.log(`Server started on ${appConfig.PORT}`);
 Bun.serve(server);
+console.log(`Server started on ${appConfig.PORT}`);

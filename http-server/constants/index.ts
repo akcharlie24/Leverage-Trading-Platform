@@ -5,7 +5,6 @@ export const corsHeaders = {
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
   "Access-Control-Allow-Credentials": "true",
-  // Ensure caches vary by origin so CORS doesn't get cached incorrectly
   Vary: "Origin",
 };
 
