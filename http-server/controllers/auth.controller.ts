@@ -8,6 +8,7 @@ export async function signUpController(req: Request): Promise<Response> {
     if (!parsedData.success) {
       return JsonResponse({ message: "Bad Request, Invalid Body" }, 400);
     }
+
     const { email, username, password } = parsedData.data;
 
     return JsonResponse({ message: "Hello there from signup" });
