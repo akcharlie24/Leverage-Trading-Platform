@@ -1,7 +1,13 @@
-import { SignUpSchema } from "@lev-trade/types";
+import { SignInSchema, SignUpSchema } from "@lev-trade/types";
 import JsonResponse from "../utils/JsonResponse";
 import prisma from "@lev-trade/db";
-import { hashPassword } from "../helper";
+import { comparePassword, hashPassword } from "../helper";
+import jwt, { type JwtPayload } from "jsonwebtoken";
+import { appConfig } from "@lev-trade/config";
+
+interface Payload extends JwtPayload {
+  userId: string;
+}
 
 export async function signUpController(req: Request): Promise<Response> {
   try {
@@ -51,7 +57,59 @@ export async function signUpController(req: Request): Promise<Response> {
 
 export async function signInController(req: Request): Promise<Response> {
   try {
-    return JsonResponse("Hello from signin controller");
+    const body = await req.json();
+    const parsedData = SignInSchema.safeParse(body);
+
+    if (!parsedData.success) {
+      return JsonResponse({ message: "Bad Request, Inavlid Body" }, 400);
+    }
+
+    const { email, password } = parsedData.data;
+
+    const findUser = await prisma.user.findFirst({
+      where: {
+        email,
+      },
+    });
+
+    if (!findUser) {
+      return JsonResponse(
+        { message: "User not found, Please try Signing Up" },
+        403,
+      );
+    }
+
+    const comparePasswordResult = await comparePassword(
+      password,
+      findUser.password,
+    );
+
+    if (!comparePasswordResult) {
+      return JsonResponse(
+        { message: "Authentication Failed, Invalid Password" },
+        401,
+      );
+    }
+
+    const payload: Payload = { userId: findUser.id };
+
+    const authToken = jwt.sign(payload, appConfig.SECRET_KEY);
+
+    const isProd = appConfig.NODE_ENV === "production";
+    const cookieOptions = [
+      "Path=/",
+      "HttpOnly",
+      isProd ? "SameSite=None" : "SameSite=Lax",
+      isProd ? "Secure" : "",
+      isProd ? "Domain=.ak24.live" : "",
+      "Max-Age=604800",
+    ]
+      .filter(Boolean)
+      .join("; ");
+
+    return JsonResponse({ message: "User Sign In successful" }, 200, {
+      "Set-Cookie": `Authentication=${authToken}; ${cookieOptions}`,
+    });
   } catch (error) {
     return JsonResponse(
       { message: "Internal Server Error, SignIn Failed" },
