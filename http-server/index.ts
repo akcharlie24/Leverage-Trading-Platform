@@ -62,7 +62,7 @@ const server = {
           } catch {}
         }
       }
-      (req as any).cookies = cookies;
+      req.cookies = cookies;
 
       const pathname = new URL(req.url).pathname;
       if (

@@ -8,12 +8,15 @@
     "start": "bun run index.ts"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/bun": "latest",
     "@types/ioredis": "^5.0.0"
   },
   "dependencies": {
     "@lev-trade/config": "workspace:*",
+    "@lev-trade/db": "workspace:*",
     "@lev-trade/types": "workspace:*",
+    "bcrypt": "^6.0.0",
     "ioredis": "^5.8.1",
     "rate-limiter-flexible": "^8.0.1",
     "redis": "^5.8.3"
