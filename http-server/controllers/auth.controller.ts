@@ -14,7 +14,7 @@ export async function signUpController(req: Request): Promise<Response> {
     const body = await req.json();
     const parsedData = SignUpSchema.safeParse(body);
     if (!parsedData.success) {
-      return JsonResponse({ message: "Bad Request, Invalid Body" }, 400);
+      return JsonResponse({ message: "Bad Request, Invalid Body" }, 401);
     }
 
     const { email, username, password } = parsedData.data;
@@ -44,7 +44,7 @@ export async function signUpController(req: Request): Promise<Response> {
 
     // TODO: directly signup here later on
     return JsonResponse(
-      { message: "User Sign Up successful", user: newUser },
+      { message: "User Sign Up successful", userId: newUser.id },
       201,
     );
   } catch (error) {
@@ -99,7 +99,7 @@ export async function signInController(req: Request): Promise<Response> {
     const cookieOptions = [
       "Path=/",
       "HttpOnly",
-      isProd ? "SameSite=None" : "SameSite=Lax",
+      isProd ? "SameSite=Strict" : "SameSite=Lax",
       isProd ? "Secure" : "",
       isProd ? "Domain=.ak24.live" : "",
       "Max-Age=604800",

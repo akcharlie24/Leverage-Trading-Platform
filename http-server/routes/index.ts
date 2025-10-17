@@ -1,39 +1,28 @@
-import {
-  signInController,
-  signUpController,
-} from "../controllers/auth.controller";
 import JsonResponse from "../utils/JsonResponse";
+import { authRouter } from "./auth.router";
+
+function stripVersionPrefix(pathname: string): string {
+  return pathname.startsWith("/v1") ? pathname.slice(3) || "/" : pathname;
+}
 
 export async function router(req: Request): Promise<Response> {
   try {
-    const routeUrl = new URL(req.url);
-    const pathname = routeUrl.pathname.replace("/v1", "");
+    const url = new URL(req.url);
+    const pathname = stripVersionPrefix(url.pathname);
 
-    if (req.method === "POST") {
-      try {
-        const validation = req.clone();
-        await validation.json();
+    const parts = pathname.split("/").filter(Boolean);
+    const route = parts[0] || "";
+    const subpath = "/" + parts.slice(1).join("/");
 
-        switch (pathname) {
-          case "/auth/signup":
-            return await signUpController(req);
+    const key = `/${route}`;
 
-          case "/auth/signin":
-            return await signInController(req);
-        }
-      } catch (error: any) {
-        return JsonResponse({ message: "Bad Request" }, 400);
-      }
+    switch (key) {
+      case "/auth":
+        return authRouter(req, subpath);
+      default:
+        return JsonResponse({ message: "Bad Requeset, Not Found" }, 404);
     }
-    if (req.method === "GET") {
-      return JsonResponse({ message: "Get Request" }, 200);
-    }
-
-    return JsonResponse({ message: "Bad Request" }, 400);
   } catch (error) {
-    return JsonResponse(
-      { message: "Internal Sever Error, Authentication Failed" },
-      500,
-    );
+    return JsonResponse({ message: "Internal Sever Error" }, 500);
   }
 }
