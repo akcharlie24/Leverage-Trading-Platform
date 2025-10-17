@@ -1,12 +1,8 @@
 {
-  "name": "lev-trade",
+  "name": "engine",
+  "module": "index.ts",
+  "type": "module",
   "private": true,
-  "workspaces": [
-    "packages/*",
-    "http-server",
-    "engine",
-    "websocket"
-  ],
   "devDependencies": {
     "@types/bun": "latest"
   },

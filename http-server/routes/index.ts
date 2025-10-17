@@ -19,6 +19,9 @@ export async function router(req: Request): Promise<Response> {
     switch (key) {
       case "/auth":
         return authRouter(req, subpath);
+
+      case "/balance"
+        return balanceRouter(req,subpath);
       default:
         return JsonResponse({ message: "Bad Requeset, Not Found" }, 404);
     }

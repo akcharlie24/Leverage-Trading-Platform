@@ -10,6 +10,7 @@ export async function authRouter(
 ): Promise<Response> {
   try {
     const key = `${req.method} ${subpath}`;
+
     switch (key) {
       case "POST /signup":
         return signUpController(req);
