@@ -23,7 +23,6 @@
       "name": "http-server",
       "dependencies": {
         "@lev-trade/config": "workspace:*",
-        "@lev-trade/db": "workspace:*",
         "@lev-trade/types": "workspace:*",
         "bcrypt": "^6.0.0",
         "ioredis": "^5.8.1",
