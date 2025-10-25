@@ -8,7 +8,8 @@
     "start": "bun run index.ts"
   },
   "dependencies": {
-    "@lev-trade/config": "workspace:*"
+    "@lev-trade/config": "workspace:*",
+    "@lev-trade/constants": "workspace:*"
   },
   "devDependencies": {
     "@types/bun": "latest"
