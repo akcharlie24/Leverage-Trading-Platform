@@ -3,9 +3,9 @@
 const assetPriceObject = {
   SOL: BigInt(0),
   ETH: BigInt(0),
-  USDC: BigInt(0),
+  BTC: BigInt(0),
 };
 
-const assetPrice: Map<string, BigInt> = new Map(
+export const assetPriceWS: Map<string, BigInt> = new Map(
   Object.entries(assetPriceObject),
 );

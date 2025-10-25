@@ -1,4 +1,5 @@
 import { BACKPACK_WS_URL, WS_DECIMALS, WS_STOCK_SYMBOLS } from "./constants";
+import { assetPriceWS } from "./store";
 
 async function startWsSever() {
   const ws = new WebSocket(BACKPACK_WS_URL);
@@ -14,18 +15,35 @@ async function startWsSever() {
 
   ws.addEventListener("message", (msg) => {
     try {
-      const data = JSON.parse(msg.data as string);
-      const symbol = data.stream.split(".")[1];
+      const msgData = JSON.parse(msg.data as string);
+      const symbol = msgData.stream.split(".")[1];
       const decimals = WS_DECIMALS.get(symbol);
 
-      // 1. Update the socket store here
-      // 2. Update the store only when prices change
-      // 3. Push to Redis stream
-      // 4. Use mark price smoothing to trigger liquidations
+      const oldPrice = assetPriceWS.get(symbol);
+      const medianPrice =
+        (parseInt(msgData.data.a) + parseInt(msgData.data.b)) / 2;
+      const assetPriceNumber = medianPrice * 10 ** decimals!;
+      const assetPriceBigInt = BigInt(assetPriceNumber);
+      const assetPriceSymbol = symbol.split("_")[0];
+
+      if (oldPrice !== assetPriceBigInt) {
+        assetPriceWS.set(assetPriceSymbol, assetPriceBigInt);
+      }
+
+      // TODO: Use mark price smoothing to trigger liquidations
     } catch (error) {
       console.log("Error parsing string");
     }
   });
+
+  const pushPriceToStream = () => {
+    assetPriceWS.forEach((val, key) => {
+      console.log(`${key} : ${val}`);
+    });
+  };
+
+  // TODO: Push to Redis stream at 100ms intervals
+  setInterval(pushPriceToStream, 100);
 }
 
 startWsSever();

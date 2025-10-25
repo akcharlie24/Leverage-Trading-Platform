@@ -57,7 +57,6 @@ export async function signUpController(req: Request): Promise<Response> {
 
 export async function signInController(req: Request): Promise<Response> {
   try {
-    console.log(req);
     const body = await req.json();
     const parsedData = SignInSchema.safeParse(body);
 
