@@ -6,6 +6,6 @@ const assetPriceObject = {
   BTC: BigInt(0),
 };
 
-export const assetPriceWS: Map<string, BigInt> = new Map(
+export const assetPriceWS: Map<string, bigint> = new Map(
   Object.entries(assetPriceObject),
 );
