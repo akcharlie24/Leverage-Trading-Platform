@@ -13,14 +13,14 @@ export async function authRouter(
 
     switch (key) {
       case "POST /signup":
-        return signUpController(req);
+        return await signUpController(req);
       case "POST /signin":
-        return signInController(req);
+        return await signInController(req);
 
-      // TODO: impolement the signout
+      // TODO: implement the signout
       //
       // case "POST /signout"
-      //   return signOutController(req);
+      //   return await signOutController(req);
 
       default:
         return JsonResponse({ message: "Bad Request, Not Found" }, 404);

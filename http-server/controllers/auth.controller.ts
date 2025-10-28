@@ -5,7 +5,7 @@ import { comparePassword, hashPassword } from "../helper";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import { appConfig } from "@lev-trade/config";
 
-interface Payload extends JwtPayload {
+export interface Payload extends JwtPayload {
   userId: string;
 }
 
@@ -92,6 +92,7 @@ export async function signInController(req: Request): Promise<Response> {
     }
 
     const payload: Payload = { userId: findUser.id };
+    // TODO: You can add user in the store of engine if you want
 
     // TODO: set expiresIn later on
     const authToken = jwt.sign(payload, appConfig.SECRET_KEY);

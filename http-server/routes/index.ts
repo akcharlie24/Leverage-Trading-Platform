@@ -18,7 +18,7 @@ export async function router(req: Request): Promise<Response> {
 
     switch (key) {
       case "/auth":
-        return authRouter(req, subpath);
+        return await authRouter(req, subpath);
 
       case "/balance":
         return JsonResponse({});

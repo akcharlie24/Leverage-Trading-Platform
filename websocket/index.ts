@@ -1,4 +1,3 @@
-import { constants } from "bun:sqlite";
 import { BACKPACK_WS_URL, WS_DECIMALS, WS_STOCK_SYMBOLS } from "./constants";
 import { assetPriceWS } from "./store";
 
@@ -14,13 +13,13 @@ async function startWsSever() {
     ws.send(JSON.stringify(payload));
   });
 
-  let streamCounter = 0;
-  let triggerCounter = 0;
-  let durationTrigger = 0;
-  let durationStream = 0;
-  let startTimeTrigger = Date.now();
-  let startTimeStream = Date.now();
-  let lastMessageTime = 0;
+  // let streamCounter = 0;
+  // let triggerCounter = 0;
+  // let durationTrigger = 0;
+  // let durationStream = 0;
+  // let startTimeTrigger = Date.now();
+  // let startTimeStream = Date.now();
+  // let lastMessageTime = 0;
 
   ws.addEventListener("message", (msg) => {
     try {
@@ -73,7 +72,7 @@ async function startWsSever() {
 
       if (oldPrice !== assetPriceBigInt) {
         assetPriceWS.set(assetPriceSymbol, assetPriceBigInt);
-        durationTrigger = Date.now() - startTimeTrigger;
+        // durationTrigger = Date.now() - startTimeTrigger;
         // TODO: Push into the redis stream here
         // Since even pushing on interval will not update, and it will only update when the price is recieved
         // Also benchmark the pushing to redis time here
