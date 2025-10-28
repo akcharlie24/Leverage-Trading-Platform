@@ -16,6 +16,12 @@ export async function authRouter(
         return signUpController(req);
       case "POST /signin":
         return signInController(req);
+
+      // TODO: impolement the signout
+      //
+      // case "POST /signout"
+      //   return signOutController(req);
+
       default:
         return JsonResponse({ message: "Bad Request, Not Found" }, 404);
     }

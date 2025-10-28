@@ -22,6 +22,7 @@ export async function router(req: Request): Promise<Response> {
 
       case "/balance":
         return JsonResponse({});
+
       default:
         return JsonResponse({ message: "Bad Requeset, Not Found" }, 404);
     }

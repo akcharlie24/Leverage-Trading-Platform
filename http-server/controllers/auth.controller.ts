@@ -93,6 +93,7 @@ export async function signInController(req: Request): Promise<Response> {
 
     const payload: Payload = { userId: findUser.id };
 
+    // TODO: set expiresIn later on
     const authToken = jwt.sign(payload, appConfig.SECRET_KEY);
 
     const isProd = appConfig.NODE_ENV === "production";
