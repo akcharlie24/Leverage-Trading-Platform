@@ -1,3 +1,4 @@
+import { constants } from "bun:sqlite";
 import { BACKPACK_WS_URL, WS_DECIMALS, WS_STOCK_SYMBOLS } from "./constants";
 import { assetPriceWS } from "./store";
 
@@ -19,9 +20,23 @@ async function startWsSever() {
   let durationStream = 0;
   let startTimeTrigger = Date.now();
   let startTimeStream = Date.now();
+  let lastMessageTime = 0;
 
   ws.addEventListener("message", (msg) => {
     try {
+      // Code to see the time bw messages
+      // const now = Date.now();
+      //
+      // if (lastMessageTime !== 0) {
+      //   const durationBetweenMessages = now - lastMessageTime;
+      //   console.log(
+      //     "Duration between messages:",
+      //     durationBetweenMessages,
+      //     "ms",
+      //   );
+      // }
+
+      // lastMessageTime = now;
       const msgData = JSON.parse(msg.data);
       if (!msgData.stream || !msgData.data) return;
 
@@ -59,9 +74,13 @@ async function startWsSever() {
       if (oldPrice !== assetPriceBigInt) {
         assetPriceWS.set(assetPriceSymbol, assetPriceBigInt);
         durationTrigger = Date.now() - startTimeTrigger;
-        console.log(
-          `Trigger Pusher ${assetPriceSymbol} : ${assetPriceWS.get(assetPriceSymbol)} trigger counter : ${triggerCounter++} in ${durationTrigger} ms and ${durationTrigger / 1000} sec`,
-        );
+        // TODO: Push into the redis stream here
+        // Since even pushing on interval will not update, and it will only update when the price is recieved
+        // Also benchmark the pushing to redis time here
+
+        // console.log(
+        //   `Trigger Pusher ${assetPriceSymbol} : ${assetPriceWS.get(assetPriceSymbol)} trigger counter : ${triggerCounter++} in ${durationTrigger} ms and ${durationTrigger / 1000} sec`,
+        // );
       }
     } catch (error) {
       console.log("Error parsing string");
@@ -69,16 +88,16 @@ async function startWsSever() {
   });
 
   // conclusion : updating values in every 100ms can be a bad approach
-  const pushPriceToStream = () => {
-    assetPriceWS.forEach((val, key) => {
-      durationStream = Date.now() - startTimeStream;
-      console.log(
-        `Stream Pusher ${key} : ${val} stream counter : ${streamCounter++} in ${durationStream} ms and ${durationStream / 1000} sec`,
-      );
-    });
-  };
+  // const pushPriceToStream = () => {
+  //   assetPriceWS.forEach((val, key) => {
+  //     durationStream = Date.now() - startTimeStream;
+  //     console.log(
+  //       `Stream Pusher ${key} : ${val} stream counter : ${streamCounter++} in ${durationStream} ms and ${durationStream / 1000} sec`,
+  //     );
+  //   });
+  // };
 
-  setInterval(pushPriceToStream, 100);
+  // setInterval(pushPriceToStream, 100);
 }
 
 startWsSever();
