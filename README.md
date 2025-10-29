@@ -1,15 +1,2 @@
-# leverage-trading-platform
-
-To install dependencies:
-
-```bash
-bun install
-```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.2.23. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+Currenly In Progress
+<img width="2122" height="1086" alt="image" src="https://github.com/user-attachments/assets/673bb07c-693a-47c3-8a27-8e3605c61b1c" />
