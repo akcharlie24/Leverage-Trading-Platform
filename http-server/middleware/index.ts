@@ -6,7 +6,7 @@ export async function authMiddleware(
   handler: (req: Request) => Promise<Response>,
 ): Promise<Response> {
   try {
-    const authToken = req.cookies.authToken;
+    const authToken = req.cookies.Authentication;
     if (!authToken) {
       return JsonResponse({ message: "Unauthorized Access" }, 401);
     }

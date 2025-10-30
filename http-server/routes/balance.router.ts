@@ -1,3 +1,8 @@
+import {
+  getBalanceController,
+  onRampBalanceController,
+} from "../controllers/balance.controller";
+import { authMiddleware } from "../middleware";
 import JsonResponse from "../utils/JsonResponse";
 
 export async function balanceRouter(
@@ -8,10 +13,10 @@ export async function balanceRouter(
     const key = `${req.method} ${subpath}`;
 
     switch (key) {
-      case "GET /:userId":
-        return JsonResponse("Get user balance");
+      case `GET ${subpath}`:
+        return authMiddleware(req, getBalanceController);
       case "POST /onramp":
-        return JsonResponse("Onramp user balance");
+        return authMiddleware(req, onRampBalanceController);
       default:
         return JsonResponse({ message: "Bad Request, Not Found" }, 404);
     }

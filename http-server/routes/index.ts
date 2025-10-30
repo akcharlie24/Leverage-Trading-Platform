@@ -1,7 +1,8 @@
 import JsonResponse from "../utils/JsonResponse";
 import { authRouter } from "./auth.router";
+import { balanceRouter } from "./balance.router";
 
-function stripVersionPrefix(pathname: string): string {
+export function stripVersionPrefix(pathname: string): string {
   return pathname.startsWith("/v1") ? pathname.slice(3) || "/" : pathname;
 }
 
@@ -21,7 +22,7 @@ export async function router(req: Request): Promise<Response> {
         return await authRouter(req, subpath);
 
       case "/balance":
-        return JsonResponse({});
+        return await balanceRouter(req, subpath);
 
       default:
         return JsonResponse({ message: "Bad Requeset, Not Found" }, 404);

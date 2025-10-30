@@ -42,6 +42,8 @@ export async function signUpController(req: Request): Promise<Response> {
       },
     });
 
+    // TODO:  Add user balance in the store of engine here
+
     // TODO: directly signup here later on
     return JsonResponse(
       { message: "User Sign Up successful", userId: newUser.id },
@@ -92,7 +94,6 @@ export async function signInController(req: Request): Promise<Response> {
     }
 
     const payload: Payload = { userId: findUser.id };
-    // TODO: You can add user in the store of engine if you want
 
     // TODO: set expiresIn later on
     const authToken = jwt.sign(payload, appConfig.SECRET_KEY);
