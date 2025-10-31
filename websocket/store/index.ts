@@ -6,6 +6,8 @@ const assetPriceObject = {
   BTC: BigInt(0),
 };
 
-export const assetPriceWS: Map<string, bigint> = new Map(
-  Object.entries(assetPriceObject),
+type Asset = "SOL" | "ETH" | "BTC";
+
+export const assetPriceWS: Map<Asset, bigint> = new Map(
+  Object.entries(assetPriceObject) as [Asset, bigint][],
 );

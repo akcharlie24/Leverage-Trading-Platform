@@ -14,8 +14,14 @@ export async function getBalanceController(req: Request): Promise<Response> {
         404,
       );
     }
+    // TODO: add a way to validate userId if possible (not needed tho we can return from engine)
 
-    return JsonResponse({ message: "All good in balance" }, 200);
+    // TODO: push to redis stream, and make engine worker to fetch balance
+
+    return JsonResponse(
+      { message: "All good in fetch balance controller" },
+      200,
+    );
   } catch (error) {
     return JsonResponse({ message: "Internal Server Error" }, 500);
   }

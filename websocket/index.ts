@@ -77,9 +77,9 @@ async function startWsSever() {
         // Since even pushing on interval will not update, and it will only update when the price is recieved
         // Also benchmark the pushing to redis time here
 
-        // console.log(
-        //   `Trigger Pusher ${assetPriceSymbol} : ${assetPriceWS.get(assetPriceSymbol)} trigger counter : ${triggerCounter++} in ${durationTrigger} ms and ${durationTrigger / 1000} sec`,
-        // );
+        console.log(
+          `Trigger Pusher ${assetPriceSymbol} : ${assetPriceWS.get(assetPriceSymbol)} trigger counter : ${triggerCounter++} in ${durationTrigger} ms and ${durationTrigger / 1000} sec`,
+        );
       }
     } catch (error) {
       console.log("Error parsing string");
