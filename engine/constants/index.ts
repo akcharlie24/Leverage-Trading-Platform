@@ -1,9 +1,14 @@
 // THIS SHOULD MATCH THE WS_DECIMALS
 // TODO: Later on create a shared decimal config
-export const ASSET_DECIMALS: Map<string, number> = new Map(
+
+// USDC is here for the userBal decimal calc
+type AssetType = "SOL" | "ETH" | "BTC" | "USDC";
+
+export const ASSET_DECIMALS: Map<AssetType, number> = new Map(
   Object.entries({
-    BTC_USDC: 6,
-    ETH_USDC: 6,
-    SOL_USDC: 6,
-  }),
+    BTC: 6,
+    ETH: 6,
+    SOL: 6,
+    USDC: 6,
+  }) as [AssetType, number][],
 );
