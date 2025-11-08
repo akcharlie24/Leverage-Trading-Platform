@@ -1,22 +1,28 @@
-import { READ_ENGINE_QUEUE } from "@lev-trade/constants";
+import { READ_ENGINE_QUEUE, WRITE_ENINGE_QUEUE } from "@lev-trade/constants";
 import { redisClient } from "./redis";
 
-async function readProcessor(payload: string) {}
+async function readProcessor(payload: string) {
+  const data = JSON.parse(payload);
+  console.log(data);
+}
 
 async function main() {
   try {
     while (true) {
-      // TODO: redis have support for multiple queue reading at the same time, so it would be better to do it like that
-      const requestRecievedReadQueue = await redisClient.brpop(
+      const requestRecieved = await redisClient.brpop(
         READ_ENGINE_QUEUE,
+        WRITE_ENINGE_QUEUE,
         0,
-        (error, payload) => {
-          if (!payload) return;
-          const jsonObj = JSON.parse(payload[1]);
-          console.log(payload[0]);
-          console.log(jsonObj);
-        },
       );
+
+      // TODO: can remove this if statement (useless check)
+      if (!requestRecieved) continue;
+
+      const [reqQueue, reqData] = requestRecieved;
+
+      if (reqQueue === READ_ENGINE_QUEUE) {
+        readProcessor(reqData);
+      }
     }
   } catch (error: any) {
     console.error("Engine Failure", error.message);

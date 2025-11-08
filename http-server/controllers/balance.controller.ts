@@ -1,4 +1,4 @@
-import { pushToReadQueue } from "../redis/queue";
+import { pushToReadQueue, pushToWriteQueue } from "../redis/queue";
 import { stripVersionPrefix } from "../routes";
 import JsonResponse from "../utils/JsonResponse";
 
