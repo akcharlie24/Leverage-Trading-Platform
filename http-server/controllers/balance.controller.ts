@@ -1,3 +1,4 @@
+import { pushToReadQueue } from "../redis/queue";
 import { stripVersionPrefix } from "../routes";
 import JsonResponse from "../utils/JsonResponse";
 
@@ -16,7 +17,17 @@ export async function getBalanceController(req: Request): Promise<Response> {
     }
     // TODO: add a way to validate userId if possible (not needed tho we can return from engine)
 
-    // TODO: push to redis stream, and make engine worker to fetch balance
+    // TODO: push to redis queue, and make engine worker to fetch balance
+    // TODO: There can be a seperate queue for read operations
+
+    const data = {
+      queryType: "readBalance",
+      payload: {
+        userId,
+      },
+    };
+
+    pushToReadQueue(data);
 
     return JsonResponse(
       { message: "All good in fetch balance controller" },

@@ -17,6 +17,7 @@
     "@lev-trade/config": "workspace:*",
     "@lev-trade/db": "workspace:*",
     "@lev-trade/types": "workspace:*",
+    "@lev-trade/constants": "workspace:*",
     "bcrypt": "^6.0.0",
     "ioredis": "^5.8.1",
     "jsonwebtoken": "^9.0.2",

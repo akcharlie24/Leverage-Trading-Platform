@@ -1,5 +1,6 @@
 import z from "zod";
 
+// ZOD Schemas
 export const SignUpSchema = z.object({
   email: z
     .email({ error: "Please enter a correct email" })
@@ -26,4 +27,3 @@ export const SignInSchema = z.object({
     .string()
     .min(5, { error: "Password should atleast be 5 characters" }),
 });
-
