@@ -1,3 +1,4 @@
+import { ReqQueryType } from "@lev-trade/types";
 import { pushToReadQueue, pushToWriteQueue } from "../redis/queue";
 import { stripVersionPrefix } from "../routes";
 import JsonResponse from "../utils/JsonResponse";
@@ -12,7 +13,7 @@ export async function getBalanceController(req: Request): Promise<Response> {
     // TODO: make queryType as enum
     // TODO: make a reqPayload type
     const reqPayload = {
-      queryType: "readBalance",
+      queryType: ReqQueryType.ReadBalance,
       payload: {
         userId,
       },

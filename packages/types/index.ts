@@ -27,3 +27,10 @@ export const SignInSchema = z.object({
     .string()
     .min(5, { error: "Password should atleast be 5 characters" }),
 });
+
+// Main Types
+
+export enum ReqQueryType {
+  CreateUser = "createUser",
+  ReadBalance = "readBalance",
+}

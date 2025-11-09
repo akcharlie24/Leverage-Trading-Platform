@@ -1,4 +1,4 @@
-import { SignInSchema, SignUpSchema } from "@lev-trade/types";
+import { ReqQueryType, SignInSchema, SignUpSchema } from "@lev-trade/types";
 import JsonResponse from "../utils/JsonResponse";
 import prisma from "@lev-trade/db";
 import { comparePassword, hashPassword } from "../helper";
@@ -46,7 +46,7 @@ export async function signUpController(req: Request): Promise<Response> {
     // TODO:  Engine write req to add user in the store and init balance here
     // TODO: queryType and reqPayloadType
     const reqPayload = {
-      queryType: "createUser",
+      queryType: ReqQueryType.CreateUser,
       payload: {
         userId: newUser.id,
       },
