@@ -4,6 +4,7 @@ import prisma from "@lev-trade/db";
 import { comparePassword, hashPassword } from "../helper";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import { appConfig } from "@lev-trade/config";
+import { pushToWriteQueue } from "../redis/queue";
 
 export interface Payload extends JwtPayload {
   userId: string;
@@ -42,9 +43,18 @@ export async function signUpController(req: Request): Promise<Response> {
       },
     });
 
-    // TODO:  Add user balance in the store of engine here
+    // TODO:  Engine write req to add user in the store and init balance here
+    // TODO: queryType and reqPayloadType
+    const reqPayload = {
+      queryType: "createUser",
+      payload: {
+        userId: newUser.id,
+      },
+    };
 
-    // TODO: directly signup here later on
+    await pushToWriteQueue(reqPayload);
+
+    // TODO: directly signin here later on
     return JsonResponse(
       { message: "User Sign Up successful", userId: newUser.id },
       201,

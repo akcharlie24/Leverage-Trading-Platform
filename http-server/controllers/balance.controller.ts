@@ -7,27 +7,18 @@ export async function getBalanceController(req: Request): Promise<Response> {
     const url = new URL(req.url);
     const pathname = stripVersionPrefix(url.pathname);
 
-    const parts = pathname.split("/").filter(Boolean);
-    const userId = parts[1];
-    if (!userId) {
-      return JsonResponse(
-        { message: "Invalid Request, Please provide userId" },
-        404,
-      );
-    }
-    // TODO: add a way to validate userId if possible (not needed tho we can return from engine)
+    const userId = req.userId;
 
-    // TODO: push to redis queue, and make engine worker to fetch balance
-    // TODO: There can be a seperate queue for read operations
-
-    const data = {
+    // TODO: make queryType as enum
+    // TODO: make a reqPayload type
+    const reqPayload = {
       queryType: "readBalance",
       payload: {
         userId,
       },
     };
 
-    pushToReadQueue(data);
+    await pushToReadQueue(reqPayload);
 
     return JsonResponse(
       { message: "All good in fetch balance controller" },
